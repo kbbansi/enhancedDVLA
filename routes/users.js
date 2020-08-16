@@ -115,7 +115,7 @@ router.post('/user/create', function (req, res, err) {
         message: `Bad Request; Missing request parameters: ${user}`
       });
     } else {
-      query = `Insert info users set?`;
+      query = `Insert into users set?`;
       dbConn.query(query, user, function (err, rows) {
         if (!err) {
           console.log('User created',rows.insertId);
@@ -124,6 +124,66 @@ router.post('/user/create', function (req, res, err) {
             status: 201,
             message: 'User Created',
             lastInsertID: rows.insertId
+          });
+        } else {
+          console.log(`Failed, DB_ERROR: ${err.code}`);
+          console.log(err);
+          res.status(400);
+          res.json({
+            status: 400,
+            db_code: `Failed; DB_ERROR occurred: ${err.code}`,
+            db_error_message: err.sqlMessage
+          });
+        }
+      });
+    }
+  } else {
+    console.log(`Internal Server Error: ${err.code}`);
+    res.status(500);
+    res.json({
+      status: 500,
+      message: `Internal Server Error: ${err.code}`
+    });
+  }
+});
+
+// update user account
+router.put('/user/update/:id', function (req, res, err) {
+  if (req) {
+    id = req.params.id;
+    userID = parseInt(id, 10);
+    // user update request object
+    user = {
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      otherNames: req.body.otherNames,
+      email: req.body.email,
+      userName: req.body.userName
+    };
+
+    // check for empty values
+    if (isEmpty(user.firstName) || isEmpty(user.lastName) || isEmpty(user.email)) {
+      console.log('Bad Request');
+      res.status(400);
+      res.json({
+        status: 400,
+        message: `Bad Request; Missing request parameters`,
+        stream: user
+      });
+    } else {
+      query = `Update users Set? where id = ${userID}`;
+      dbConn.query(query, user, function (err, rows) {
+        if (!err) {
+          console.log('User Updated', rows.insertId);
+          console.log(query, user);
+          res.status(202);
+          res.json({
+            status: 202,
+            message: 'User Updated',
+            stream: {
+              data: user,
+              ID: rows[0]
+            }
           });
         } else {
           console.log(`Failed: ${err.code}`);
@@ -136,15 +196,13 @@ router.post('/user/create', function (req, res, err) {
       });
     }
   } else {
-   console.log(err.code);
-   res.status(500);
-   res.json({
-     status: 500,
-     message: `Failed; Internal Server Error: ${err.code}`
-   });
+    console.log(`Internal Server Error: ${err.code}`);
+    res.status(500);
+    res.json({
+      status: 500,
+      message: `Internal Server Error: ${err.code}`
+    });
   }
 });
-
-// update user account
 
 module.exports = router;
