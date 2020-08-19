@@ -83,7 +83,7 @@ router.post('/appointment/create', function (req, res, err) {
 });
 
 // get all new appointments
-router.get('/new/', function (req, res, err) {
+router.get('/new', function (req, res, err) {
     // let date = req.params.date;
     if (req) {
         query = `Select * from appointments where status = 'new'`;
@@ -122,6 +122,48 @@ router.get('/new/', function (req, res, err) {
         })
     }
 });
+
+// get all active appointments
+router.get('/active', function (req, res, err) {
+    // let date = req.params.date;
+    if (req) {
+        query = `Select * from appointments where status = 'active'`;
+        dbConn.query(query, function (err, rows) {
+            if (!err) {
+                if (isEmpty(rows)) {
+                    console.log('No Appointments');
+                    res.status(404);
+                    res.json({
+                        status: 404,
+                        message: 'No New Appointments'
+                    });
+                } else {
+                    console.log(query, rows);
+                    res.status(200);
+                    res.json({
+                        status: 200,
+                        data: rows
+                    });
+                }
+            } else {
+                console.log(err.code);
+                res.status(400);
+                res.json({
+                    status: 400,
+                    message: `Encountered Db error: ${err.code}`
+                });
+            }
+        })
+    } else {
+        console.log(`An Error Occurred: ${err.code}`);
+        res.status(500);
+        res.json({
+            status: 500,
+            reason: `Internal Server Error: ${err.code}`
+        })
+    }
+});
+
 
 // update one appointment
 router.put('/appointment/update/:id', function (req, res, err) {
