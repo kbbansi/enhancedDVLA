@@ -3,10 +3,10 @@ const mysql = require('mysql');
 
 
 let connectionPool = mysql.createPool({
-    host: 'mysql-11316-0.cloudclusters.net',
-    port: 11316,
-    user: 'BaeBoo',
-    password: 'recruitBaeBoo',
+    host: 'mysql-11316-0.cloudclusters.net', //'mysql-11316-0.cloudclusters.net',
+    port: 11316, //11316,
+    user: 'BaeBoo', //root',
+    password: 'recruitBaeBoo', //'root',
     database: 'enhanced_dvla',
     connectionLimit: 30
 });

@@ -85,11 +85,11 @@ router.get('/user/:id', function (req, res, err) {
     });
   } else {
     console.log(`Failed; Internal Server Error: ${err.code}`);
-        res.status(500);
-        res.json({
-          status: 500,
-          message: `Failed; Internal Server Error: ${err.code}`
-        });
+    res.status(500);
+    res.json({
+      status: 500,
+      message: `Failed; Internal Server Error: ${err.code}`
+    });
   }
 });
 
@@ -118,7 +118,7 @@ router.post('/user/create', function (req, res, err) {
       query = `Insert into users set?`;
       dbConn.query(query, user, function (err, rows) {
         if (!err) {
-          console.log('User created',rows.insertId);
+          console.log('User created', rows.insertId);
           res.status(201);
           res.json({
             status: 201,
