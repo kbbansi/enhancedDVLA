@@ -18,7 +18,7 @@ router.post('/appointment/create', function (req, res, err) {
             service_type: req.body.service_type,
             time_slot: req.body.time_slot,
             booked_via: req.body.booked_via,
-            unique_appointment_key: req.body.client_name.toString().substr(1, 4).toUpperCase() + '-DVLA',
+            unique_appointment_key: req.body.client_name.toString().substr(1, 6).toUpperCase() + '- DVLA',
             created_on: new Date()
         };
 
@@ -43,6 +43,7 @@ router.post('/appointment/create', function (req, res, err) {
                         From: "kwabenaampofo5@gmail.com",
                         Subject: 'Appointment Notice',
                         firstName: appointment.client_name,
+                        service: appointment.service_type,
                         unique_appointment_key: appointment.unique_appointment_key
                     };
                     mailing.mail('Appointment', mailData);

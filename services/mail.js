@@ -11,7 +11,7 @@ const oauth2Client = new OAuth2(
 );
 
 oauth2Client.setCredentials({
-    refresh_token: process.env.REFRESHTOKEN
+    refresh_token: process.env.REFRESH_TOKEN
 });
 
 let transporter, mailObject, mailOptions;
@@ -20,6 +20,7 @@ exports.mail = function (serviceName, data) {
     switch (serviceName) {
         case 'Appointment':
             console.log(data);
+            console.log(process.env.OAUTHCLIENTID);
             transporter = nodeMailer.createTransport({
                 service: 'gmail',
                 auth: {
@@ -53,7 +54,7 @@ exports.mail = function (serviceName, data) {
                 html: mailObject.HtmlMessage,
                 auth: {
                     user: "kwabenaampofo5@gmail.com",
-                    refreshToken: process.env.REFRESHTOKEN,
+                    refreshToken: process.env.REFRESH_TOKEN,
                     accessToken: process.env.ACCESS_TOKEN,
                     expires: 1484314697598
                 },
@@ -62,7 +63,7 @@ exports.mail = function (serviceName, data) {
             // send mail
             transporter.sendMail(mailOptions, function (err, info) {
                 if (err) {
-                    console.log(err.message.toString());
+                    console.log('Oops and error occurred',err.message.toString());
                     return err;
                 } else {
                     console.log(info);
@@ -104,7 +105,7 @@ exports.mail = function (serviceName, data) {
                 html: mailObject.HtmlMessage,
                 auth: {
                     user: "kwabenaampofo5@gmail.com",
-                    refreshToken: process.env.REFRESHTOKEN,
+                    refreshToken: process.env.REFRESH_TOKEN,
                     accessToken: process.env.ACCESS_TOKEN,
                     expires: 1484314697598
                 },
