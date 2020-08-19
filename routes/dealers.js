@@ -82,7 +82,7 @@ router.put('/dealer/update/:id', function (req, res, err) {
         };
 
         // check for empty values
-        if (isEmpty(dealer.firstName) || isEmpty(dealer.lastName) || isEmpty(dealer.email)) {
+        if (isEmpty(dealer.dealership_name) || isEmpty(dealer.contact_person) || isEmpty(dealer.email)) {
             console.log('Bad Request');
             res.status(400);
             res.json({
